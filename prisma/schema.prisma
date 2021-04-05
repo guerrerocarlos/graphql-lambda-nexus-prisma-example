@@ -11,7 +11,7 @@ datasource db {
 model User {
   id        String   @id @default(cuid())
   email     String   @unique
-  birthDate DateTime
+  birthDate DateTime?
   Post      Post?    @relation(fields: [postId], references: [id])
   postId    String?
 }
@@ -19,4 +19,10 @@ model User {
 model Post {
   id     String @id @default(cuid())
   author User[]
+}
+
+model Payment {
+  id        String   @id @default(cuid())
+  account   String
+  amount    Int
 }

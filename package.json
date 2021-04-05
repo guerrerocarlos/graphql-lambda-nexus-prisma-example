@@ -4,11 +4,14 @@
   "description": "Serverless webpack example using Typescript",
   "main": "handler.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "generate": "ts-node-dev --no-notify --transpileOnly --respawn src/handlers.ts; npx prisma generate;"
   },
   "dependencies": {
     "@prisma/client": "^2.20.1",
     "graphql-lambda": "^1.0.0",
+    "nexus": "^1.0.0",
+    "nexus-plugin-prisma": "^0.33.0",
     "source-map-support": "^0.5.19"
   },
   "devDependencies": {
@@ -20,6 +23,7 @@
     "serverless-webpack": "^5.2.0",
     "ts-loader": "^8.0.10",
     "ts-node": "^9.0.0",
+    "ts-node-dev": "^1.1.6",
     "typescript": "^4.0.5",
     "webpack": "^5.4.0",
     "webpack-node-externals": "^2.5.2"
