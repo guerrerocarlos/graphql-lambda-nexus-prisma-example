@@ -12,6 +12,7 @@ model User {
   id        String   @id @default(cuid())
   email     String   @unique
   birthDate DateTime?
+  bio       String?
   Post      Post?    @relation(fields: [postId], references: [id])
   postId    String?
 }

@@ -1,10 +1,12 @@
 import type { AWS } from "@serverless/typescript";
+import * as dotenv from "dotenv";
 
 const serverlessConfiguration: AWS = {
   service: "graphql-lambda-prisma-example",
   // frameworkVersion: '2',
   // Add the serverless-webpack plugin
   plugins: ["serverless-webpack"],
+  useDotenv: true,
   // "plugins": [
   //   "serverless-plugin-typescript",
   // ],
@@ -142,5 +144,12 @@ const serverlessConfiguration: AWS = {
     },
   },
 };
+
+const envVariables = dotenv.config().parsed;
+console.log({ envVariables });
+Object.keys(envVariables).forEach((envVariable) => {
+  serverlessConfiguration.provider.environment[envVariable] =
+    envVariables[envVariable];
+});
 
 module.exports = serverlessConfiguration;

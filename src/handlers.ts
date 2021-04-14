@@ -1,6 +1,5 @@
 import "source-map-support/register";
 
-import { join } from "path"
 import { APIGatewayEvent, SQSEvent } from "aws-lambda";
 
 import {
@@ -10,38 +9,20 @@ import {
   EventProcessor,
   APIGatewayWebSocketEvent,
   eventStore,
+  pubSub,
 } from "./lambda";
 
-// import { typeDefs, resolvers } from "./graphql/schema";
+import { PrismaClient } from "@prisma/client";
+import getSchema from "./graphql/schema";
 
-import { nexusPrisma } from 'nexus-plugin-prisma'
-import { makeSchema } from 'nexus'
-
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
-
-// import * as types from './types'
-
-import { types } from './graphql/nexus-schemas'
-
-const schema = makeSchema({
-  types,
-  plugins: [nexusPrisma({
-    experimentalCRUD: true,
-    shouldGenerateArtifacts: false,
-  })],
-  outputs: {
-    typegen: join(__dirname,'..', 'generated/typings.ts'),
-    schema: join(__dirname, '..', 'generated/schema.graphql'),
-  },
-})
+const prisma = new PrismaClient();
 
 const server = new Server({
   connectionManager,
   eventProcessor: new EventProcessor(),
   // typeDefs,
   // resolvers,
-  schema,
+  schema: getSchema({ pubSub }),
   subscriptionManager,
   onError: (err) => {
     console.log(err);

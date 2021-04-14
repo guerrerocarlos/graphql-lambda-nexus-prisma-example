@@ -2,32 +2,21 @@
 
 import { Payment } from "@prisma/client";
 import {
-  mutationType,
-  objectType,
-  queryType,
   extendType,
   intArg,
+  mutationType,
   nonNull,
+  objectType,
+  queryType,
   stringArg,
   subscriptionType,
 } from "nexus";
 
-import { pubSub } from "../lambda";
-
-let PaymentType = objectType({
-  name: "Payment",
-  definition(t) {
-    t.model.id();
-    t.model.account();
-    t.model.amount();
-  },
-})
-
-export const types = [
+const getTypes = ({ pubSub }) => [
   queryType({
     definition(t) {
       t.crud.user();
-      t.crud.users({ ordering: true });
+      t.crud.users({ ordering: true, filtering: true });
       t.crud.post();
       t.crud.posts({ filtering: true });
     },
@@ -51,28 +40,37 @@ export const types = [
     definition(t) {
       t.model.id();
       t.model.email();
-      t.model.birthDate();
+      // t.model.birthDate();
     },
   }),
-  PaymentType,
+
   objectType({
     name: "Post",
     definition(t) {
       t.model.id();
     },
   }),
+
+  objectType({
+    name: "Payment",
+    definition(t) {
+      t.model.id();
+      t.model.account();
+      t.model.amount();
+    },
+  }),
   subscriptionType({
     definition(t) {
-      t.field("paymentsFeed", {
-        type: "Payment",
-        subscribe: pubSub.subscribe("NEW_PAYMENT"),
-        resolve: (rootValue) => {
-          return rootValue;
-        },
-      });
+      // t.field("paymentsFeed", {
+      //   type: "Payment",
+      //   subscribe: pubSub.subscribe("NEW_PAYMENT"),
+      //   resolve: (rootValue) => {
+      //     return rootValue;
+      //   },
+      // });
       t.field("usersFeed", {
         type: "User",
-        subscribe: pubSub.subscribe("user_added"),
+        subscribe: pubSub.subscribeTo("user_added"),
         resolve: (rootValue) => {
           return rootValue;
         },
@@ -83,12 +81,12 @@ export const types = [
     type: "Mutation",
     definition(t) {
       t.nonNull.field("sendPayment", {
-        type: PaymentType,
+        type: "Payment",
         args: {
           account: nonNull(stringArg()),
           amount: nonNull(intArg()),
         },
-        async resolve(_, { account, amount }, ctx) {
+        async resolve(_, { account, amount }) {
           const payload = {
             account: account,
             amount: amount,
@@ -100,3 +98,5 @@ export const types = [
     },
   }),
 ];
+
+export default getTypes;

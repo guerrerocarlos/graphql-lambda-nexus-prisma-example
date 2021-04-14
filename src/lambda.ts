@@ -28,7 +28,8 @@ export class SQSQueue implements IEventStore {
 }
 
 export const eventStore = new SQSQueue();
-export const pubSub = new PubSub({ eventStore });
+export const pubSub: any = new PubSub({ eventStore });
+pubSub.subscribeTo = pubSub.subscribe
 export const subscriptionManager = new SubscriptionManager({
   subscriptionManagerStorage: new Map(),
 });
