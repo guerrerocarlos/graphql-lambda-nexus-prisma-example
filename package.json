@@ -5,7 +5,7 @@
   "main": "handler.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "generate": "ts-node-dev --no-notify --transpileOnly --respawn src/handlers.ts; npx prisma generate;"
+    "generate": "ts-node-dev --no-notify --transpile-only --respawn src/index.ts; npx prisma generate;"
   },
   "dependencies": {
     "@prisma/client": "^2.20.1",

@@ -6,3 +6,4 @@ let newUser: NexusGenObjects["User"];
 
 newUser = { id: "10", email: "test@mail.com" };
 // newUser2 = { id: "20", email: "mail@mail.com" };
+newUser.
