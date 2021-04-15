@@ -8,8 +8,16 @@ This is a [graphql-lambda](https://github.com/guerrerocarlos/graphql-lambda) mod
  * Nexus-prisma generated types and CRUD
  * `Subscription` queries implementation with Prisma module 
 
-# How to
+# Run locally
+
+ 1. Set the `DATABASE_URL` in a `.env` file in the root folder
+ 1. Install the dependencies with `npm install`
+ 1. If it's a new database, run the migrations with `npm run migrations`
+ 1. Run the service locally `ts-node src/index.ts`
+
+# Deploy to AWS Lambda
 
 Deploy as usual with [serverless](https://serverles.com/) framework:
 
 `serverless deploy`
+
